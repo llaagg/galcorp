@@ -4,10 +4,5 @@
         <setting label="50002" type="text"   id="vspl_username" 	default=""/>
         <setting label="50003" type="text"   id="vspl_password" 	option="hidden"  default=""/>
         <setting label="50003" type="text"   id="vspl_ssid" 	    visible="false"  default=""/>
-        
-        <!--<setting type="sep"/>-->
     </category>
-    <!--<category label="32010">
-        <setting label="32032" type="action" action="RunScript(my.addon.id, downloadreport)"/>
-    </category>-->
 </settings>
