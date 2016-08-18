@@ -1,0 +1,26 @@
+# Addon Name: LagTV VideoStar
+# Addon id: plugin.video.lagtvvideostar
+# Addon Provider: LagTV
+
+msgid ""
+msgstr ""
+
+"Project-Id-Version: LagTV VideoStar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "#50001"
+msgid "Videostar.pl"
+msgstr "Videostar.pl"
+
+msgctxt "#50002"
+msgid "Username"
+msgstr "Użytkownik"
+
+msgctxt "#50003"
+msgid "Password"
+msgstr "Hasło"
+

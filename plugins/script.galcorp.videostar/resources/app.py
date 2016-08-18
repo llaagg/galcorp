@@ -9,7 +9,7 @@ def updateSettting(ssid):
     lg.log( 'setting: '+ssid)
 
 def getUserCreds():
-    v = vault.Vault("user", "pass", 'cookie', updateSettting)
+    v = vault.Vault("pgalezowski@gmail.com", "VsBudapestIsHungry!2", 'a00c121f9599a102a87ce1bd3539302b', updateSettting)
     return v
 
 videoStarClient = videostar.VsClient(getUserCreds(), lg)

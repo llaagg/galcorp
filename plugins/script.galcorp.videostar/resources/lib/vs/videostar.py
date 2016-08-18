@@ -88,7 +88,10 @@ class VsClient:
     def extractChannels(self, channels):
         listing = []
         for c in channels:
-            listing.append( (c["slug"] , c["name"], c["id"]) ) 
+            free = (c["access_status"] == "subscribed")
+            lent=(c["slug"] , c["name"], c["id"], free)
+            listing.append( lent )
+            print lent 
         return listing
 
     def showChannels(self, channels):
