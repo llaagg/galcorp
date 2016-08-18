@@ -7,6 +7,8 @@ import xbmcaddon
 
 from resources.lib.vs import videostar 
 from resources.lib.common import  vault
+from resources.lib.common import  instr
+
 
 # Get the plugin url in plugin:// notation.
 _url = sys.argv[0]
@@ -15,8 +17,12 @@ _handle = int(sys.argv[1])
 
 xbmsettings = xbmcaddon.Addon().getSetting
 
+lg = instr.ConsoleLogger('*** VS ***:')
+
 def updateSettting(val):
-    print "Updating user settings" + str(val)
+    print "Updating user settings" + val
+    xbmcaddon.Addon().setSetting("vspl_ssid", val)
+    
     
 def getUserCreds():
     v = vault.Vault(xbmsettings("vspl_username"),xbmsettings("vspl_password"), xbmsettings("vspl_ssid"), updateSettting)
@@ -43,7 +49,8 @@ def settings():
     pass
 
 def watch(id):
-    videoStarClient = videostar.VsClient(getUserCreds())
+    lg.log("Watching")
+    videoStarClient = videostar.VsClient(getUserCreds(), lg)
     url = videoStarClient.getUrl(id)    
     xbmc.Player().play(url)
     
@@ -51,9 +58,11 @@ def list_channels():
     """
     lists all channels in video star
     """
+    lg.log('Hi plugin started')
+
     xbmc.log('Listing channels')
 
-    videoStarClient = videostar.VsClient(getUserCreds())
+    videoStarClient = videostar.VsClient(getUserCreds(), lg)
     list = videoStarClient.getChannels()
     
     listing = []
@@ -104,12 +113,11 @@ def router(paramstring):
         elif params['action'] == 'settings':
             settings()
         elif params['action'] == 'watch':
-            #watch(params['id'])
-            menu()
+            watch(params['id'])
         else:
             xbmc.log( str(params) )
     else:
-       	menu()
+        menu()
 
 if __name__ == '__main__':
     # Call the router function and pass the plugin call parameters to it.
