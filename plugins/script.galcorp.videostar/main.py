@@ -28,7 +28,7 @@ def getUserCreds():
     return v
 
 
-def get_item(name, action, id = None, isFolder = False):
+def get_item(name, action, id = None, isFolder = False, thumb = None):
     """
     creates list item object
     @name to be visible on list
@@ -46,6 +46,7 @@ def get_item(name, action, id = None, isFolder = False):
         
     lti = xbmcgui.ListItem(label = name)
     #lti.setInfo('video', {'title': name} )
+    lti.setArt({ 'thumb' : thumb, 'icom':thumb, 'fanart':thumb });
     url = '{0}?action={1}&id={2}'.format(_url, action, id)
     itm = (url, lti, isFolder)
     #xbmc.log( str( itm) )

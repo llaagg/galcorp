@@ -1,23 +1,22 @@
-
-import client
 import json
 
 class VsClient:
     CookieName = "netviapisessid"
 
-    def __init__(self, creds, logger = None):
+    def __init__(self, creds, httpClient, logger = None):
         self.vault = creds
         self.lg = logger
+        self.client = httpClient
 
     def getChannels(self):
         loginResult = self.login()
         co = self.getLoginCookie(loginResult)
 
         limiturl='https://api.videostar.pl/invitations/limit'
-        limitResult = client.post(limiturl, requestCookie=co)
+        limitResult = self.client.post(limiturl, requestCookie=co)
 
         channelList='https://api.videostar.pl/channels/list/ios-plus'
-        channelResult = client.post(channelList, requestCookie=  co);
+        channelResult = self.client.post(channelList, requestCookie=  co);
         channels = json.loads(channelResult["payload"])["channels"]
 
         cresult = self.extractChannels(channels)
@@ -30,7 +29,7 @@ class VsClient:
                 ss = self.vault.ssId
                 self.lg.log("Trying to use old cookie: "+ss)
                 limiturl='https://api.videostar.pl/invitations/limit'
-                limitResult = client.post(limiturl, requestCookie=self.getLoginCookie(ss))
+                limitResult = self.client.post(limiturl, requestCookie=self.getLoginCookie(ss))
                 if limitResult:
 
                     self.lg.log(str(limitResult["payload"]))
@@ -66,7 +65,7 @@ class VsClient:
 
         self.lg.log("Starting authentication as "+postParams['login'])
 
-        loginResult = client.post(loginUrl, post=postParams)       
+        loginResult = self.client.post(loginUrl, post=postParams)       
 
         if loginResult:
             status = json.loads(loginResult["payload"])
@@ -89,9 +88,9 @@ class VsClient:
         listing = []
         for c in channels:
             free = (c["access_status"] == "subscribed")
-            lent=(c["slug"] , c["name"], c["id"], free)
+            lent=(c["slug"] , c["name"], c["id"], free , c["thumbnail"])
             listing.append( lent )
-            print lent 
+            
         return listing
 
     def showChannels(self, channels):
@@ -112,13 +111,13 @@ class VsClient:
 
         loginResult = self.login()
 
-        getStream = client.post(getStreamUrl, requestCookie= self.getLoginCookie(loginResult) );
+        getStream = self.client.post(getStreamUrl, requestCookie= self.getLoginCookie(loginResult) );
         
 
         result = json.loads(getStream['payload'])
         if result['status'] == 'ok':
             url = result['stream_channel']['url_base']
-            result = client.post(url, requestCookie=self.getLoginCookie(loginResult))
+            result = self.client.post(url, requestCookie=self.getLoginCookie(loginResult))
             return result["url"]
         else:
             raise Exception("Failed to obtain stream url from videostar")
